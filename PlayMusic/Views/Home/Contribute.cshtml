@@ -1,1 +1,50 @@
-﻿
+﻿@model PlayMusic.Models.tblMusic
+
+<div class="form-fileup">
+    <form action="@Url.Action("Contribute", "Home")" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <h3 class="theh3">Upload Nhạc</h3>
+
+        <!-- Dropdown Chọn Chủ Đề -->
+        <p>Chọn chủ đề âm nhạc:</p>
+        @Html.DropDownListFor(m => m.idchude, ViewBag.Genres as SelectList, "Chọn chủ đề", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.idchude, "", new { @class = "text-danger" })
+
+        <!-- Tệp Âm Thanh -->
+        <p>File Âm Thanh:</p>
+        <input type="file" name="AudioFile" class="form-control" />
+        <span class="text-danger">@ViewData.ModelState["Data"]</span>
+
+        <!-- Hình Ảnh -->
+        <p>Hình ảnh:</p>
+        <input type="file" name="ImageFile" class="form-control" />
+        <span class="text-danger">@ViewData.ModelState["Image"]</span>
+
+        <!-- Tên Bài Hát -->
+        <p>Tên Bài Hát:</p>
+        @Html.TextBoxFor(m => m.DisplayName, new { @class = "form-control", placeholder = "Nhập tên bài hát" })
+        @Html.ValidationMessageFor(m => m.DisplayName, "", new { @class = "text-danger" })
+
+        <!-- Tác Giả -->
+        <p>Ca Sĩ:</p>
+        @Html.TextBoxFor(m => m.casi, new { @class = "form-control", placeholder = "Nhập tên ca sĩ" })
+        @Html.ValidationMessageFor(m => m.casi, "", new { @class = "text-danger" })
+
+        <!-- Lời Bài Hát -->
+        <p>Lời Bài Hát:</p>
+        @Html.TextAreaFor(m => m.Cotenttype, new { @class = "form-control", rows = 5, placeholder = "Nhập lời bài hát" })
+        @Html.ValidationMessageFor(m => m.Cotenttype, "", new { @class = "text-danger" })
+
+        <!-- Nút Submit -->
+        <button type="submit" class="btn btn-primary mt-3">Upload</button>
+
+        <!-- Hiển Thị Thông Báo -->
+        <div>
+            @if (ViewBag.Message != null)
+            {
+                <span>@ViewBag.Message</span>
+            }
+        </div>
+    </form>
+</div>

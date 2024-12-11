@@ -50,22 +50,30 @@
 
 <div class="container">
     <h3 style="margin-left: 10px">
-        <a href="@Url.Action("Index", "Home")" style="color: black">Trang chủ</a> - Bài hát - @Model.DisplayName
+        <a href='@Url.Action("Index", "Home")' style="color: black">Trang chủ</a> - Bài hát - @Model.DisplayName
     </h3>
     <hr style="width: 85%" />
+   
 
     <div class="audion">
         <div>
-            <img class="imgg" src="@Model.Image" alt="@Model.DisplayName" />
+            <img class="imgg" src="@Model.Image" alt="@Model.DisplayName" style="width:400px"/>
         </div>
         <div class="klga">
             <p class="per-r">@Model.DisplayName</p>
             <p>Ca sĩ: @Model.casi</p>
+            <form action="@Url.Action("AddToFavorite", "Song")" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.iDmusic" /> <!-- Ensure this value is correct -->
+                <button type="submit" class="favorite-btn" title="Thêm vào yêu thích">
+                    ❤️
+                </button>
+            </form>
 
-          
+
             <audio autoplay="autoplay" src="@Url.Content("~/music/" + Model.Data)" controls="controls" class="nhac"></audio>
-        
-                        
+
+
 
         </div>
     </div>

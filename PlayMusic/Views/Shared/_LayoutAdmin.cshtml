@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Music App</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .header {
+            background-color: #0066cc;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .header .left, .header .center, .header .right {
+                display: flex;
+                align-items: center;
+            }
+
+                .header .left a, .header .right a {
+                    color: white;
+                    margin-right: 20px;
+                    text-decoration: none;
+                    padding: 10px 15px;
+                    background-color: #005bb5;
+                    border-radius: 5px;
+                }
+
+                    .header .left a:hover, .header .right a:hover {
+                        background-color: #004999;
+                    }
+
+            .header .center {
+                flex-grow: 1;
+                justify-content: center;
+            }
+
+                .header .center input[type="text"] {
+                    width: 200px;
+                    padding: 5px;
+                }
+
+                .header .center button {
+                    padding: 5px 10px;
+                }
+
+        .content {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            background-color: #0066cc;
+            width: 200px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-item {
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            display: block;
+            text-decoration: none;
+            color: white;
+            padding: 10px;
+            background-color: #0066cc;
+            border-radius: 5px;
+        }
+
+            .sidebar a:hover {
+                background-color: #005bb5;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="left">
+                <a href="@Url.Action("Index", "Admin")">Trang chủ</a>
+                <a href="@Url.Action("Contribute", "Admin")">Upload nhạc</a>
+            </div>
+            
+
+
+            <div class="right">
+               
+                    <a href="@Url.Action("Index", "LoginAdmin")">Đăng Xuất</a>
+               
+
+            </div>
+
+        </div>
+
+        <div style="text-align: center; background-color: #0066cc;color:red;">
+            <h2 class="center"></h2>
+        </div>
+        <div class="content">
+            <div class="sidebar">
+
+                <a href="@Url.Action("ManageDisplayedSongs", "Admin")" class="menu-item">Quản Lý Album  Ca Sỹ</a>
+                <a class="nav-link" href="@Url.Action("Songs", "Admin")">Quản lý Bài Hát</a>
+                <a class="nav-link" href="@Url.Action("Users", "Admin")">Quản lý Người Dùng</a>
+                <a href="@Url.Action("ManageGenre", "Admin")" class="menu-item">Quản Lý Thể Loại</a>
+                <a href="@Url.Action("ManageViews", "Admin")" class="menu-item">Thống kê Số Lượng Truy Cập</a>
+                <a href="@Url.Action("ContributeList", "Admin")" class="menu-item">Những Bài Hát Đã Đóng Góp</a>
+                <a href="@Url.Action("ManageSongs", "Admin")" class="menu-item">Thống Kê Bài Hát</a>
+            </div>
+            <div class="main-content">
+                @RenderBody()
+            </div>
+        </div>
+        @RenderSection("Scripts", required: false)
+    </div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+﻿@model List<PlayMusic.Models.tblMusic>
+
+@{
+    ViewBag.Title = "Danh sách nhạc đã đóng góp";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table th, .table td {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+        }
+
+    .hinhanh img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+    }
+
+    .btntt {
+        display: flex;
+        justify-content: center;
+    }
+
+        .btntt button {
+            margin: 5px;
+            padding: 8px 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+    .btnsua {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .btnxoa {
+        background-color: #f44336;
+        color: white;
+    }
+</style>
+
+<div class="danhsach">
+    <h3>Quản Lý Danh Sách Nhạc</h3>
+    <hr style="width: 85%" />
+
+    <table class="table table-striped bang">
+        <thead>
+            <tr>
+                <th>Hình ảnh</th>
+                <th>Tên Bài Hát</th>
+                <th>Người Sáng Tác</th>
+                <th>Âm Thanh</th>
+                <th>Nội Dung</th>
+                <th>Chức Năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var music in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="hinhanh">
+                                <a href="#">
+                                    <img src="@Url.Content(music.Image)" />
+                                </a>
+                            </div>
+                        </td>
+                        <td>@music.DisplayName</td>
+                        <td>@music.casi</td>
+                        <td>
+                            <audio src="@Url.Content("~/music/" + music.Data)" controls="controls"></audio>
+                        </td>
+                        <td>@(music.Cotenttype != null ? music.Cotenttype.Replace("\n", "\n\n") : "N/A")</td>
+                        <td>
+                            <div class="btntt">
+                                <a href="@Url.Action("EditMusic", "Admin", new { id = music.iDmusic })">
+                                    <button class="btnsua">Sửa</button>
+                                </a>
+                                <button class="btnxoa" onclick="DeleteMusic(@music.iDmusic)">Xóa</button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6">Không có bài nhạc nào được đóng góp</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function DeleteMusic(id) {
+        if (confirm('Bạn có chắc chắn muốn xóa bài nhạc này?')) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteMusic", "Admin")',
+                data: { id: id },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        location.reload(); // Tải lại trang sau khi xóa thành công
+                    } else {
+                        alert('Lỗi: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra khi xóa.');
+                }
+            });
+        }
+    }
+</script>

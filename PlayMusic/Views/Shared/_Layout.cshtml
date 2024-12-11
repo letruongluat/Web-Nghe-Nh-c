@@ -101,26 +101,33 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" >
         <div class="header">
             <div class="left">
                 <a href="@Url.Action("Index", "Song")">Trang chủ</a>
-                <a href="#">Upload nhạc</a>
+                <a href="@Url.Action("Information_User", "Home")">Xem Thông Tin Cá Nhân</a>
             </div>
             <div class="center">
-                <input type="text" placeholder="Tìm Kiếm" />
-                <button>Tìm</button>
+                <form action="/Music/Search" method="get">
+                    <!-- Phương thức GET -->
+                    <input type="text" name="searchTerm" placeholder="Tìm kiếm tên nhạc" />
+                    <button type="submit">Tìm</button>
+                </form>
             </div>
+           
+
             <div class="right">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a href="@Url.Action("Index", "Login")">Logout</a>
+                    <a href="@Url.Action("Logout", "Login")">Đăng Xuất</a>
                 }
                 else
                 {
-                    <a href="@Url.Action("Index", "Login")">Login</a>
+                    <a href="@Url.Action("Index", "Login")">Đăng Nhập</a>
                 }
+
             </div>
+
         </div>
 
         <div style="text-align: center; background-color: #0066cc;color:red;">
@@ -129,15 +136,10 @@
         <div class="content">
             <div class="sidebar">
                 <a href="@Url.Action("NewMusic", "Home")" class="menu-item">Nhạc Mới</a>
-                <a href="@Url.Action("Genres", "Home")" class="menu-item">Thể loại</a>
-                <a href="@Url.Action("Top100", "Home")" class="menu-item">Top 100</a>
+                <a href="@Url.Action("Genres", "Home")" class="menu-item">Thể loại</a>     
                 <a href="@Url.Action("Artists", "Home")" class="menu-item">Ca sĩ</a>
                 <a href="@Url.Action("Contribute", "Home")" class="menu-item">Đóng góp nhạc</a>
-                <a href="@Url.Action("ContributedList", "Home")" class="menu-item">Danh sách nhạc đã đóng góp</a>
-                <a href="@Url.Action("ManageUserMusic", "Home")" class="menu-item">Quản lý nhạc người dùng</a>
-                <a href="@Url.Action("ManageDisplayedSongs", "Home")" class="menu-item">Quản lý bài hát hiển thị</a>
-                <a href="@Url.Action("ManageViews", "Home")" class="menu-item">Quản lý số lượt truy cập</a>
-                <a href="@Url.Action("ManageFavoriteAlbums", "Home")" class="menu-item">Quản lý Album yêu thích</a>
+                <a href="@Url.Action("ManageFavoriteAlbums", "Song")" class="menu-item">Quản lý Album yêu thích</a>
             </div>
             <div class="main-content">
                 @RenderBody()

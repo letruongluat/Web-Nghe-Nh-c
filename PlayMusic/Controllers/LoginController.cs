@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using PlayMusic.Models;
 using System;
+using System.Web.Security;
 
 namespace PlayMusic.Controllers
 {
@@ -29,14 +30,20 @@ namespace PlayMusic.Controllers
 
             try
             {
-                // Kiểm tra xem username (IDacount) và password có khớp trong cơ sở dữ liệu không
+               
                 var user = db.tblAccounts.FirstOrDefault(u => u.IDacount == username && u.Password == password);
 
                 if (user != null)
                 {
+                    FormsAuthentication.SetAuthCookie(user.IDacount, false);
                     TempData["SuccessMessage"] = "Đăng nhập thành công!";
-                    return RedirectToAction("Index", "Song"); // Chuyển hướng đến trang chủ của ứng dụng
+
+                    // Lưu ID của người dùng vào Session
+                    Session["UserID"] = user.IDacount;
+
+                    return RedirectToAction("Index", "Song");
                 }
+
                 else
                 {
                     ViewBag.ErrorMessage = "Tên đăng nhập hoặc mật khẩu không đúng";
@@ -45,7 +52,7 @@ namespace PlayMusic.Controllers
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi nếu có
+                
                 ViewBag.ErrorMessage = "Đã xảy ra lỗi: " + ex.Message;
                 if (ex.InnerException != null)
                 {
@@ -58,6 +65,13 @@ namespace PlayMusic.Controllers
                 }
                 return View();
             }
+        }
+        public ActionResult Logout()
+        {
+            
+            FormsAuthentication.SignOut(); 
+                                          
+            return RedirectToAction("Index", "Login");
         }
 
 

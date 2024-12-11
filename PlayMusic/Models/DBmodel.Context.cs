@@ -32,5 +32,7 @@ namespace PlayMusic.Models
         public virtual DbSet<tblAccount> tblAccounts { get; set; }
         public virtual DbSet<tblMusic> tblMusics { get; set; }
         public virtual DbSet<Theloai> Theloais { get; set; }
+        public virtual DbSet<FavoriteAlbum> FavoriteAlbums { get; set; }
+        public virtual DbSet<ViewLog> ViewLogs { get; set; }
     }
 }

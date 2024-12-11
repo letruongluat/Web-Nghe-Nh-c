@@ -1,0 +1,132 @@
+﻿@model PlayMusic.Models.tblAccount
+
+@{
+    ViewBag.Title = "Chỉnh sửa thông tin người dùng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+    /* Cấu hình chung cho form */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    /* Style cho nhãn của các trường nhập */
+    label {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* Cấu hình cho các trường nhập */
+    input.form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-top: 5px;
+    }
+
+    /* Hiển thị thông báo lỗi */
+    .text-danger {
+        color: red;
+        font-size: 12px;
+    }
+
+    /* Nút "Lưu" và "Hủy" */
+    button.btn-primary,
+    a.btn-default {
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+    }
+
+    /* Nút "Lưu" */
+    button.btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: none;
+    }
+
+        button.btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    /* Nút "Hủy" */
+    a.btn-default {
+        background-color: #6c757d;
+        color: white;
+        text-align: center;
+        margin-left: 10px;
+    }
+
+        a.btn-default:hover {
+            background-color: #5a6268;
+        }
+
+    /* Cấu hình cho tiêu đề */
+    h2 {
+        margin-bottom: 30px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+   
+    /* Cải thiện khoảng cách và căn chỉnh cho các phần tử trong form */
+    .form-group input,
+    .form-group label {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .form-group button {
+        margin-top: 10px;
+    }
+</style>
+<div>
+    <h2>Chỉnh sửa thông tin người dùng</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.IDacount)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password)
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name)
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.email)
+            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ngaysinh)
+            @Html.EditorFor(model => model.ngaysinh, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ngaysinh, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.gioitinh)
+            @Html.EditorFor(model => model.gioitinh, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.gioitinh, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        @Html.ActionLink("Hủy", "ManageUsers", "Admin", null, new { @class = "btn btn-default" })
+    }
+</div>

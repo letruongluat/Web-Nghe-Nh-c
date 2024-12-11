@@ -1,11 +1,12 @@
-﻿@model IEnumerable<PlayMusic.Models.Theloai>
+﻿@model IEnumerable<PlayMusic.Models.chude>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Thể Loại - Music App</title>
+    <title>Chủ Đề - Music App</title>
     <style>
+        /* Same styling as before */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -22,13 +23,13 @@
             padding: 20px;
         }
 
-        .theloai {
+        .chude {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
         }
 
-            .theloai a {
+            .chude a {
                 width: 100px;
                 height: 100px;
                 margin: 10px;
@@ -79,29 +80,16 @@
 <body>
     <div class="container">
         <h3>Thể Loại</h3>
-        <div class="theloai">
-            @foreach (var genre in Model)
+        <div class="chude">
+            @foreach (var topic in Model)
             {
-                <a href="@Url.Action("Genres", "Home", new { nametheloai = genre.IDtheloai })">
-                    @genre.Tentheloai
-                </a>
-            }
+    <a href="@Url.Action("GetSongsByChude", "Home", new { id = topic.IDchude })">
+        @topic.theloai1
+    </a>            }
         </div>
+
         <hr style="width:85%" />
-        <h3 style="margin-left:50px">Danh Sách Nhạc Thể Loại:</h3>
-        <div class="nhamoi">
-            <div class="audion">
-                <a href="hienthinhac.aspx?idmusic=1">
-                    <img class="imgg" src="~/Images/sample.jpg" />
-                </a>
-                <p class="per-r">
-                    <a class="title" href="hienthinhac.aspx?idmusic=1">Sample Song</a><br />
-                    Sample Artist
-                </p>
-            </div>
-            <!-- Add more items here dynamically based on selected genre -->
-        </div>
+       
     </div>
 </body>
 </html>
-

@@ -1,0 +1,114 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "LoginAdmin";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <style>
+        /* Định dạng toàn trang */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4e54c8, #8f94fb);
+            position: relative;
+        }
+
+        /* Tiêu đề */
+        .header-title {
+            position: absolute;
+            top: 20px;
+            text-align: center;
+            width: 100%;
+            color: #fff;
+            font-size: 24px;
+        }
+
+        /* Container của form */
+        form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        /* Định dạng cho các label */
+        label {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        /* Định dạng cho các trường input */
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+            transition: border-color 0.3s ease;
+        }
+
+            input[type="text"]:focus,
+            input[type="password"]:focus {
+                border-color: #4e54c8;
+                outline: none;
+            }
+
+        /* Định dạng cho nút đăng nhập */
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4e54c8;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            button[type="submit"]:hover {
+                background-color: #3b43b5;
+            }
+
+        /* Thông báo lỗi */
+        p {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-title"><h2>Đăng Nhập Admin</h2></div>
+
+    <form method="post" action="@Url.Action("Index", "Admin")">
+        <div>
+            <label for="username">Tên đăng nhập:</label>
+            <input type="text" id="username" name="username" required />
+        </div>
+        <div>
+            <label for="password">Mật khẩu:</label>
+            <input type="password" id="password" name="password" required />
+        </div>
+        <button type="submit">Đăng nhập</button>
+    </form>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <p style="color:red;">@ViewBag.Error</p>
+    }
+</body>
+</html>

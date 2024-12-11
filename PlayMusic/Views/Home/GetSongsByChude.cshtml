@@ -1,0 +1,84 @@
+﻿@model IEnumerable<PlayMusic.Models.tblMusic>
+
+<style>
+    h3 {
+        text-align: center; /* Center the heading */
+        margin-top: 20px; /* Margin above the heading */
+        margin-bottom: 20px; /* Margin below the heading to separate from the table */
+        color: black;
+        font-size: 24px;
+    }
+
+    .table-container {
+        width: 100%; /* Ensure the container takes full width */
+        margin-top: 20px; /* Margin above the table */
+    }
+
+    table {
+        width: 100%; /* Full width of the table */
+        border-collapse: collapse; /* Collapses borders */
+    }
+
+    th, td {
+        padding: 15px; /* Padding for table cells */
+        text-align: center; /* Center text in cells */
+        border-bottom: 1px solid #ddd; /* Bottom border for rows */
+    }
+
+    th {
+        background-color: #f2f2f2; /* Background color for header */
+    }
+
+    .favorite-item img {
+        width: 100px; /* Adjust width of images */
+        height: auto; /* Maintain aspect ratio */
+        border-radius: 5px; /* Optional: rounded corners */
+    }
+
+    audio {
+        width: 100%; /* Full width for audio controls */
+    }
+</style>
+
+<!-- Container for Heading and Table -->
+<div class="table-container">
+    <h3>Danh Sách Bài Hát Thuộc Chủ Đề</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ảnh</th>
+                <th>Tên Bài Hát</th>
+                <th>Ca Sĩ</th>
+                <th>Phát Nhạc</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any()) // Kiểm tra xem có bài hát nào không
+            {
+                foreach (var song in Model)
+                {
+                    <tr class="favorite-item">
+                        <td>
+                            <img src="@song.Image" alt="@song.DisplayName" />
+                        </td>
+                        <td><strong>@song.DisplayName</strong></td>
+                        <td>@song.casi</td>
+                        <td>
+                            <audio controls>
+                                <source src="@Url.Content("~/music/" + song.Data)" type="audio/mpeg">
+                                Trình duyệt của bạn không hỗ trợ phát nhạc.
+                            </audio>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4">Không có bài hát nào thuộc chủ đề này.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

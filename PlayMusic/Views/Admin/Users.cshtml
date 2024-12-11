@@ -1,0 +1,162 @@
+﻿@model IEnumerable<PlayMusic.Models.tblAccount>
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+    /* Toàn bộ trang */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 20px;
+    }
+
+    /* Căn chỉnh tiêu đề */
+    .danhsach h3 {
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .danhsach hr {
+        border: none;
+        height: 2px;
+        background-color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    /* Kiểu dáng cho bảng */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #fff;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .table thead {
+            background-color: #007bff;
+            color: white;
+            text-align: left;
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Kiểu dáng cho liên kết chức năng */
+        .table a {
+            color: #007bff;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+            .table a:hover {
+                color: white;
+                background-color: #0056b3;
+            }
+
+        /* Các nút chức năng */
+        .table .btn-delete {
+            color: #dc3545;
+        }
+
+            .table .btn-delete:hover {
+                color: white;
+                background-color: #c82333;
+            }
+
+        .table .btn-details {
+            color: #28a745;
+        }
+
+            .table .btn-details:hover {
+                color: white;
+                background-color: #218838;
+            }
+</style>
+<div class="danhsach">
+    <h3>Quản lý danh sách người dùng</h3>
+    <p>
+        @Html.ActionLink("Thêm Tài Khoản Mới", "CreateUser", "Admin", null, new { @class = "btn btn-primary" })
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID Tài Khoản</th>
+                <th>Mật Khẩu</th>
+                <th>Họ và Tên</th>
+                <th>Email</th>
+                <th>Ngày Sinh</th>
+                <th>Giới Tính</th>
+                <th>Chức năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+            <tr id="user-@user.IDacount">
+                <td>@user.IDacount</td>
+                <td>@user.Password</td>
+                <td>@user.Name</td>
+                <td>@user.email</td>
+                <td>@user.ngaysinh</td>
+                <td>@user.gioitinh</td>
+                <td>
+                    @Html.ActionLink("Xem chi tiết", "ViewUserDetails", "Admin", new { id = user.IDacount }, new { @class = "btn btn-info" })
+                    @Html.ActionLink("Sửa", "EditUser", "Admin", new { id = user.IDacount }, new { @class = "btn btn-warning" })
+
+                    <!-- Xóa người dùng -->
+                    <button type="button" class="btn btn-danger delete-btn" data-id="@user.IDacount">Xóa</button>
+                </td>
+            </tr>
+            }
+
+            @section Scripts {
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+        $(document).ready(function () {
+            $(".delete-btn").click(function () {
+                var userId = $(this).data("id");
+
+                // Xác nhận trước khi xóa
+                if (confirm("Bạn có chắc chắn muốn xóa người dùng này?")) {
+                    // Gửi yêu cầu Ajax
+                    $.ajax({
+                        url: '@Url.Action("DeleteUserAjax", "Admin")',
+                        type: 'POST',
+                        data: { id: userId },
+                        success: function (response) {
+                            if (response.success) {
+                                // Nếu xóa thành công, xóa dòng người dùng khỏi bảng
+                                $("#user-" + userId).remove();
+                                alert(response.message); // Hiển thị thông báo thành công
+                            } else {
+                                alert(response.message); // Hiển thị thông báo lỗi
+                            }
+                        },
+                        error: function () {
+                            alert("Có lỗi xảy ra khi xóa người dùng.");
+                        }
+                    });
+                }
+            });
+        });
+                </script>
+            }

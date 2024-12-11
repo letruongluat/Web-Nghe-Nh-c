@@ -1,0 +1,113 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+    /* Định dạng tiêu đề */
+    h2 {
+        font-size: 2em;
+        color: #333;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    /* Định dạng cho tổng số lượng bài hát */
+    .total-songs {
+        font-size: 1.2em;
+        color: #555;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    /* Khung chứa biểu đồ */
+    .chart-container {
+        width: 60%;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
+
+    /* Canh giữa biểu đồ */
+    canvas {
+        display: block;
+        margin: 20px auto;
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex; */
+        justify-content: center;
+        align-items: center;
+    }
+    .chart-container {
+        width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
+</style>
+<div>
+    <div class="total-songs">
+        <p>Tổng số lượng bài hát: @ViewBag.TotalSongs</p>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="songsChart" width="800" height="400"></canvas>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Lấy dữ liệu từ ViewBag
+        const songsByTopic = @Html.Raw(Json.Encode(ViewBag.SongsByTopic));
+
+        // Dữ liệu cho biểu đồ
+        const labels = songsByTopic.map(item => item.TopicName || "Unknown");
+        const data = songsByTopic.map(item => item.SongCount);
+
+        // Cấu hình và vẽ biểu đồ
+        const ctx = document.getElementById('songsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Số lượng bài hát theo chủ đề',
+                    data: data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}

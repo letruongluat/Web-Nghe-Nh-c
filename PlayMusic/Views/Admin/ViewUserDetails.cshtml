@@ -1,0 +1,77 @@
+﻿@model PlayMusic.Models.tblAccount
+
+@{
+    ViewBag.Title = "Chi Tiết Tài Khoản";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+    /* Cấu hình chung cho các nút */
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 4px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+    /* Nút "Quay lại" */
+    .btn-default {
+        background-color: #6c757d;
+        color: white;
+    }
+
+        .btn-default:hover {
+            background-color: #5a6268;
+        }
+
+    /* Style cho phần chi tiết tài khoản */
+    h3 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        font-weight: bold;
+      
+    }
+
+    /* Style cho các thông tin chi tiết */
+    div {
+      
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        div p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+            div p strong {
+                font-weight: bold;
+            }
+
+    /* Thiết kế tổng thể */
+   
+</style>
+
+<div>
+<h3>Chi Tiết Tài Khoản</h3>
+
+<div>
+    <p><strong>ID:</strong> @Model.IDacount</p>
+    <p><strong>Mật Khẩu:</strong> @Model.Password</p>
+    <p><strong>Tên người dùng:</strong> @Model.Name</p>
+    <p><strong>Email:</strong> @Model.email</p>
+    <p><strong>Ngày Sinh:</strong> @Model.ngaysinh</p>
+    <p><strong>Giới Tính:</strong> @Model.gioitinh</p>
+</div>
+
+<p>
+    @Html.ActionLink("Quay lại", "Users", "Admin", null, new { @class = "btn btn-default" })
+</p>
+    </div>

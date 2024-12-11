@@ -1,0 +1,115 @@
+﻿@model PlayMusic.Models.tblAccount
+
+@{
+    ViewBag.Title = "Chỉnh sửa thông tin tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <style>
+        /* Styling cho form chỉnh sửa */
+        .container {
+
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            text-align:center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #4e54c8;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #4e54c8;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4e54c8;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+            button:hover {
+                background-color: #3b43b5;
+            }
+
+        .success {
+            color: green;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Chỉnh sửa thông tin tài khoản</h2>
+
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <p class="error">@ViewBag.ErrorMessage</p>
+        }
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <p class="success">@TempData["SuccessMessage"]</p>
+        }
+
+        <form asp-action="EditInformation" method="post">
+            @Html.AntiForgeryToken()
+            <label for="IDacount">ID Tài Khoản</label>
+            <input type="text" id="IDacount" name="IDacount" value="@Model.IDacount" readonly />
+
+            <label for="Password">Mật Khẩu</label>
+            <input type="password" id="Password" name="Password" value="@Model.Password" required />
+
+            <label for="Name">Họ và Tên</label>
+            <input type="text" id="Name" name="Name" value="@Model.Name" required />
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="@Model.email" required />
+
+            <label for="ngaysinh">Ngày Sinh</label>
+            <input type="date" id="ngaysinh" name="ngaysinh" value="@Model.ngaysinh.ToString()" required />
+
+            <label for="gioitinh">Giới Tính</label>
+            <input type="text" id="gioitinh" name="gioitinh" value="@Model.gioitinh" required />
+
+            <button type="submit">Lưu Thay Đổi</button>
+        </form>
+    </div>
+</body>
+</html>

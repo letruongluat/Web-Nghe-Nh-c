@@ -18,6 +18,28 @@ namespace PlayMusic
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+               name: "Admin",
+               url: "Admin/{action}/{id}",
+               defaults: new { controller = "Admin", action = "Index", id = UrlParameter.Optional }
+           );
+            routes.MapRoute(
+        name: "DeleteUser",
+        url: "Admin/DeleteUser/{id}",
+        defaults: new { controller = "Admin", action = "DeleteUser", id = UrlParameter.Optional },
+        namespaces: new[] { "PlayMusic.Controllers" }
+    ); routes.MapRoute(
+     name: "RemoveFromFavorite",
+     url: "Song/RemoveFromFavorite",
+     defaults: new { controller = "Song", action = "RemoveFromFavorite" }
+ );
+            routes.MapRoute(
+           name: "MusicSearch",
+           url: "Music/Search",
+           defaults: new { controller = "Music", action = "Search" }
+       );
+
+
         }
     }
 }

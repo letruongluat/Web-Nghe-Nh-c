@@ -1,0 +1,112 @@
+﻿@model IEnumerable<PlayMusic.Models.tblMusic>
+
+@{
+    ViewBag.Title = "Danh sách yêu thích";
+}
+
+<style>
+    h3 {
+        text-align: center;
+        margin: 20px 0;
+        color: black;
+        font-size: 24px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f9f9f9;
+        font-weight: bold;
+    }
+
+    img {
+        width: 100px;
+        border-radius: 5px;
+    }
+
+    audio {
+        width: 100%;
+    }
+
+    .btn-danger {
+        background-color: #e74c3c;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+    .alert {
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+    }
+
+    .alert-success {
+        background-color: #dff0d8;
+        color: #3c763d;
+    }
+
+    .alert-danger {
+        background-color: #f2dede;
+        color: #a94442;
+    }
+</style>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+
+
+<div class="container">
+    <h2 style="text-align:center;">Danh Sách Bài Hát Yêu Thích</h2>
+
+    @if (Model.Any())
+    {
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Tên Bài Hát</th>
+            <th>Ca Sĩ</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var song in Model)
+        {
+<tr>
+    <td>@song.DisplayName</td> <!-- Hiển thị tên bài hát -->
+    <td>@song.casi</td> <!-- Hiển thị ca sĩ -->
+    <td>
+        @Html.ActionLink("Chi Tiết", "Details", "Song", new { id = song.iDmusic }, new { @class = "btn btn-info btn-sm" })
+        @Html.ActionLink("Xóa", "RemoveFromFavorite", "Song", new { id = song.iDmusic }, new { @class = "btn btn-danger btn-sm" })
+    </td>
+</tr>                }
+    </tbody>
+</table> }
+            else
+            {
+<p>Bạn chưa có bài hát yêu thích nào.</p>}
+</div>

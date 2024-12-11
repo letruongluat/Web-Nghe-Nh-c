@@ -1,0 +1,85 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<!-- Hiển thị danh sách bài hát -->
+<div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Người Dùng | </th>
+                <th>Tên Bài Hát | </th>
+                <th>Hình Ảnh | </th>
+                <th>Phát Nhạc | </th>
+                <th>Lượt Nghe</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.ContributeList != null && ViewBag.ContributeList.Count > 0)
+            {
+                foreach (var song in ViewBag.ContributeList)
+                {
+            <tr>
+                <td>@song.iDacc</td>
+                <td>@song.DisplayName</td>
+                <td>
+                    <img src="@song.Image" alt="@song.DisplayName" style="width: 100px; height: auto;" />
+                </td>
+                <td>
+                    <audio controls>
+                        <source src="@Url.Content("~/music/" + song.Data)" type="audio/mpeg">
+                        Trình duyệt của bạn không hỗ trợ phát nhạc.
+                    </audio>
+                </td>
+                <td>@(song.luotnghe ?? 0)</td>
+            </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" style="text-align: center;">Không có bài hát nào được đóng góp bởi người dùng khác.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Biểu đồ -->
+    <h3>Biểu đồ số lượng bài hát đóng góp theo người dùng</h3>
+    <canvas id="contributedSongsChart" width="400" height="200"></canvas>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Lấy dữ liệu từ ViewBag.ChartData
+        const chartData = @Html.Raw(Json.Encode(ViewBag.ChartData));
+
+        // Tách dữ liệu thành nhãn và số liệu
+        const labels = chartData.map(item => item.User);
+        const data = chartData.map(item => item.SongCount);
+
+        // Tạo biểu đồ
+        const ctx = document.getElementById('contributedSongsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Số lượng bài hát đóng góp',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}

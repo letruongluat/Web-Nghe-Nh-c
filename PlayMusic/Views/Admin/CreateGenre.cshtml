@@ -1,0 +1,106 @@
+﻿@model PlayMusic.Models.chude
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    /* Căn chỉnh và kiểu dáng cho toàn bộ trang */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 20px;
+        display: flex;
+    }
+
+    /* Tiêu đề chính */
+    h2 {
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    /* Kiểu dáng cho form */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            font-weight: bold;
+            color: #555;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.875em;
+    }
+
+    /* Kiểu dáng cho các nút */
+    .btn {
+        padding: 8px 16px;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-right: 8px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-default {
+        background-color: #6c757d;
+        color: #fff;
+    }
+
+        .btn-default:hover {
+            background-color: #5a6268;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+    /* Kiểu dáng cho phần xác nhận xóa */
+    h4, h5 {
+        color: #333;
+        margin-top: 20px;
+    }
+</style>
+<div>
+    <h2>Thêm Thể Loại</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+
+            @Html.EditorFor(model => model.theloai1, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.theloai1, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu  </button>
+
+        @Html.ActionLink("Hủy", "ManageGenre", "Admin", null, new { @class = "btn btn-default" })
+    }
+</div>

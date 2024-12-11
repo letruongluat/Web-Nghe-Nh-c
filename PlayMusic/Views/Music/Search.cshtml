@@ -1,0 +1,68 @@
+﻿@model List<PlayMusic.Models.MusicViewModel>
+
+<style>
+    .search-bar {
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+    }
+
+    audio {
+        width: 100%;
+    }
+</style>
+
+@if (!Model.Any())
+{
+    <p>Không tìm thấy bài hát nào.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Hình ảnh</th>
+                <th>Tên Bài Hát</th>
+                <th>Ca Sĩ</th>
+                <th>Âm Thanh</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var music in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@music.ImageUrl" alt="@music.DisplayName" />
+                    </td>
+                    <td>@music.DisplayName</td>
+                    <td>@music.Artist</td>
+                    <td>
+                        <audio controls>
+                            <source src="@Url.Content(music.AudioUrl)" type="audio/mpeg">
+                            Trình duyệt của bạn không hỗ trợ phát nhạc.5
+                        </audio>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

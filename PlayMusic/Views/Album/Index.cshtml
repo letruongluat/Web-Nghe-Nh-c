@@ -1,0 +1,14 @@
+﻿@model IEnumerable<PlayMusic.Models.tblMusic>
+
+<h2>Album Yêu Thích</h2>
+<hr />
+
+@foreach (var song in Model)
+{
+    <div>
+        <h3>@song.DisplayName</h3>
+        <p>Ca sĩ: @song.casi</p>
+        <audio src="@Url.Content("~/music/" + song.Data)" controls></audio>
+    </div>
+    <hr />
+}

@@ -1,0 +1,88 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div>
+    <h3>Thống kê theo ngày</h3>
+    <canvas id="dailyViewsChart" width="400" height="200"></canvas>
+</div>
+
+<div>
+    <h3>Thống kê theo tháng</h3>
+    <canvas id="monthlyViewsChart" width="400" height="200"></canvas>
+</div>
+
+<div>
+    <h3>Thống kê theo quý</h3>
+    <canvas id="quarterlyViewsChart" width="400" height="200"></canvas>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Thống kê theo ngày
+        const dailyViews = @Html.Raw(Json.Encode(ViewBag.DailyViews));
+        const dailyLabels = dailyViews.map(d => {
+            const date = new Date(d.Date.trim());
+            return isNaN(date) ? "Invalid Date" : date.toLocaleDateString();
+        });
+
+
+        const dailyData = dailyViews.map(d => d.Count);
+
+        const ctxDaily = document.getElementById('dailyViewsChart').getContext('2d');
+        new Chart(ctxDaily, {
+            type: 'line',
+            data: {
+                labels: dailyLabels,
+                datasets: [{
+                    label: 'Lượt truy cập theo ngày',
+                    data: dailyData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Thống kê theo tháng
+        const monthlyViews = @Html.Raw(Json.Encode(ViewBag.MonthlyViews));
+        const monthlyLabels = monthlyViews.map(m => `${m.Month}/${m.Year}`);
+        const monthlyData = monthlyViews.map(m => m.Count);
+
+        const ctxMonthly = document.getElementById('monthlyViewsChart').getContext('2d');
+        new Chart(ctxMonthly, {
+            type: 'bar',
+            data: {
+                labels: monthlyLabels,
+                datasets: [{
+                    label: 'Lượt truy cập theo tháng',
+                    data: monthlyData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Thống kê theo quý
+        const quarterlyViews = @Html.Raw(Json.Encode(ViewBag.QuarterlyViews));
+        const quarterlyLabels = quarterlyViews.map(q => `Q${q.Quarter}/${q.Year}`);
+        const quarterlyData = quarterlyViews.map(q => q.Count);
+
+        const ctxQuarterly = document.getElementById('quarterlyViewsChart').getContext('2d');
+        new Chart(ctxQuarterly, {
+            type: 'bar',
+            data: {
+                labels: quarterlyLabels,
+                datasets: [{
+                    label: 'Lượt truy cập theo quý',
+                    data: quarterlyData,
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
+                }]
+            }
+        });
+    </script>
+}

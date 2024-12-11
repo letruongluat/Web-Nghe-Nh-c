@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MusicWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MusicWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="bxh">
           <Key>
             <PropertyRef Name="idbxh" />
@@ -22,6 +22,14 @@
           <Property Name="theloai2" Type="nvarchar" MaxLength="50" />
           <Property Name="theloai3" Type="nvarchar" MaxLength="50" />
           <Property Name="idacc" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="FavoriteAlbums">
+          <Key>
+            <PropertyRef Name="IDFavorite" />
+          </Key>
+          <Property Name="IDFavorite" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDacount" Type="nvarchar" MaxLength="50" />
+          <Property Name="iDMusic" Type="int" />
         </EntityType>
         <EntityType Name="nhactt">
           <Key>
@@ -74,6 +82,38 @@
           <Property Name="IDtheloai" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Tentheloai" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="ViewLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ViewDate" Type="date" Nullable="false" />
+          <Property Name="Count" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_FavoriteAlbums_Account">
+          <End Role="tblAccount" Type="Self.tblAccount" Multiplicity="0..1" />
+          <End Role="FavoriteAlbums" Type="Self.FavoriteAlbums" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAccount">
+              <PropertyRef Name="IDacount" />
+            </Principal>
+            <Dependent Role="FavoriteAlbums">
+              <PropertyRef Name="IDacount" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FavoriteAlbums_Music">
+          <End Role="tblMusic" Type="Self.tblMusic" Multiplicity="0..1" />
+          <End Role="FavoriteAlbums" Type="Self.FavoriteAlbums" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMusic">
+              <PropertyRef Name="iDmusic" />
+            </Principal>
+            <Dependent Role="FavoriteAlbums">
+              <PropertyRef Name="iDMusic" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_nhactt_tblMusic">
           <End Role="tblMusic" Type="Self.tblMusic" Multiplicity="0..1" />
           <End Role="nhactt" Type="Self.nhactt" Multiplicity="*" />
@@ -113,11 +153,21 @@
         <EntityContainer Name="MusicWebModelStoreContainer">
           <EntitySet Name="bxh" EntityType="Self.bxh" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="chude" EntityType="Self.chude" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FavoriteAlbums" EntityType="Self.FavoriteAlbums" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="nhactt" EntityType="Self.nhactt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAccount" EntityType="Self.tblAccount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblMusic" EntityType="Self.tblMusic" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Theloai" EntityType="Self.Theloai" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ViewLog" EntityType="Self.ViewLog" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FavoriteAlbums_Account" Association="Self.FK_FavoriteAlbums_Account">
+            <End Role="tblAccount" EntitySet="tblAccount" />
+            <End Role="FavoriteAlbums" EntitySet="FavoriteAlbums" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FavoriteAlbums_Music" Association="Self.FK_FavoriteAlbums_Music">
+            <End Role="tblMusic" EntitySet="tblMusic" />
+            <End Role="FavoriteAlbums" EntitySet="FavoriteAlbums" />
+          </AssociationSet>
           <AssociationSet Name="FK_nhactt_tblMusic" Association="Self.FK_nhactt_tblMusic">
             <End Role="tblMusic" EntitySet="tblMusic" />
             <End Role="nhactt" EntitySet="nhactt" />
@@ -131,8 +181,7 @@
             <End Role="tblMusic" EntitySet="tblMusic" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MusicWebModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -186,6 +235,7 @@
           <Property Name="gioitinh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="imange" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tblMusics" Relationship="Self.FK_tblMusic_tblAccount" FromRole="tblAccount" ToRole="tblMusic" />
+          <NavigationProperty Name="FavoriteAlbums" Relationship="MusicWebModel.FK_FavoriteAlbums_Account" FromRole="tblAccount" ToRole="FavoriteAlbum" />
         </EntityType>
         <EntityType Name="tblMusic">
           <Key>
@@ -203,6 +253,7 @@
           <NavigationProperty Name="chude" Relationship="Self.FK_tblMusic_chude" FromRole="tblMusic" ToRole="chude" />
           <NavigationProperty Name="nhactts" Relationship="Self.FK_nhactt_tblMusic" FromRole="tblMusic" ToRole="nhactt" />
           <NavigationProperty Name="tblAccount" Relationship="Self.FK_tblMusic_tblAccount" FromRole="tblMusic" ToRole="tblAccount" />
+          <NavigationProperty Name="FavoriteAlbums" Relationship="MusicWebModel.FK_FavoriteAlbums_Music" FromRole="tblMusic" ToRole="FavoriteAlbum" />
         </EntityType>
         <EntityType Name="Theloai">
           <Key>
@@ -267,7 +318,59 @@
             <End Role="tblAccount" EntitySet="tblAccounts" />
             <End Role="tblMusic" EntitySet="tblMusics" />
           </AssociationSet>
+          <EntitySet Name="FavoriteAlbums" EntityType="MusicWebModel.FavoriteAlbum" />
+          <AssociationSet Name="FK_FavoriteAlbums_Account" Association="MusicWebModel.FK_FavoriteAlbums_Account">
+            <End Role="tblAccount" EntitySet="tblAccounts" />
+            <End Role="FavoriteAlbum" EntitySet="FavoriteAlbums" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FavoriteAlbums_Music" Association="MusicWebModel.FK_FavoriteAlbums_Music">
+            <End Role="tblMusic" EntitySet="tblMusics" />
+            <End Role="FavoriteAlbum" EntitySet="FavoriteAlbums" />
+          </AssociationSet>
+          <EntitySet Name="ViewLogs" EntityType="MusicWebModel.ViewLog" />
         </EntityContainer>
+        <EntityType Name="FavoriteAlbum">
+          <Key>
+            <PropertyRef Name="IDFavorite" />
+          </Key>
+          <Property Name="IDFavorite" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDacount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="iDMusic" Type="Int32" />
+          <NavigationProperty Name="tblAccount" Relationship="MusicWebModel.FK_FavoriteAlbums_Account" FromRole="FavoriteAlbum" ToRole="tblAccount" />
+          <NavigationProperty Name="tblMusic" Relationship="MusicWebModel.FK_FavoriteAlbums_Music" FromRole="FavoriteAlbum" ToRole="tblMusic" />
+        </EntityType>
+        <Association Name="FK_FavoriteAlbums_Account">
+          <End Type="MusicWebModel.tblAccount" Role="tblAccount" Multiplicity="0..1" />
+          <End Type="MusicWebModel.FavoriteAlbum" Role="FavoriteAlbum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAccount">
+              <PropertyRef Name="IDacount" />
+            </Principal>
+            <Dependent Role="FavoriteAlbum">
+              <PropertyRef Name="IDacount" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FavoriteAlbums_Music">
+          <End Type="MusicWebModel.tblMusic" Role="tblMusic" Multiplicity="0..1" />
+          <End Type="MusicWebModel.FavoriteAlbum" Role="FavoriteAlbum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMusic">
+              <PropertyRef Name="iDmusic" />
+            </Principal>
+            <Dependent Role="FavoriteAlbum">
+              <PropertyRef Name="iDMusic" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ViewLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ViewDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Count" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -347,6 +450,24 @@
               <MappingFragment StoreEntitySet="Theloai">
                 <ScalarProperty Name="IDtheloai" ColumnName="IDtheloai" />
                 <ScalarProperty Name="Tentheloai" ColumnName="Tentheloai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FavoriteAlbums">
+            <EntityTypeMapping TypeName="MusicWebModel.FavoriteAlbum">
+              <MappingFragment StoreEntitySet="FavoriteAlbums">
+                <ScalarProperty Name="iDMusic" ColumnName="iDMusic" />
+                <ScalarProperty Name="IDacount" ColumnName="IDacount" />
+                <ScalarProperty Name="IDFavorite" ColumnName="IDFavorite" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewLogs">
+            <EntityTypeMapping TypeName="MusicWebModel.ViewLog">
+              <MappingFragment StoreEntitySet="ViewLog">
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="ViewDate" ColumnName="ViewDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

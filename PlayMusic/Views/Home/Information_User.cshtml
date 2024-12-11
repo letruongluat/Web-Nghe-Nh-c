@@ -1,0 +1,77 @@
+﻿@model PlayMusic.Models.tblAccount
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    /* Định dạng toàn trang */
+   
+    .content{
+        display:flex;
+    }
+    /* Container tổng */
+    .container {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+       
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+   
+        text-align: center;
+    }
+
+    /* Tiêu đề */
+    h2 {
+        color: #4e54c8;
+        margin: 0 0 20px;
+        font-size: 24px;
+    }
+
+    /* Định dạng thông tin tài khoản */
+    p {
+        font-size: 16px;
+        color: #333;
+        margin: 10px 0;
+        line-height: 1.6;
+    }
+
+        /* Định dạng nhãn */
+        p strong {
+            color: #4e54c8;
+        }
+
+    /* Nút chỉnh sửa thông tin */
+    a {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #4e54c8;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+        a:hover {
+            background-color: #3b43b5;
+        }
+</style>
+
+
+<div class="content">
+    <div class="container">
+        <h2>Thông Tin Tài Khoản</h2>
+        <p><strong>ID Tài Khoản:</strong> @Model.IDacount</p>
+        <p><strong>Mật Khẩu:</strong> @Model.Password</p>
+        <p><strong>Họ và Tên:</strong> @Model.Name</p>
+        <p><strong>Email:</strong> @Model.email</p>
+        <p><strong>Ngày Sinh:</strong> @Model.ngaysinh.ToString()</p>
+        <p><strong>Giới Tính:</strong> @Model.gioitinh</p>
+        <a href="@Url.Action("EditInformation", "Home")">Chỉnh sửa thông tin</a>
+    </div>
+    <div class="">
+     
+    </div>
+</div>
+
+
+

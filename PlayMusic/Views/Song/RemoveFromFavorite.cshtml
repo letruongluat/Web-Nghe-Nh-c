@@ -1,0 +1,26 @@
+﻿@model PlayMusic.Models.FavoriteAlbum
+
+@{
+    ViewBag.Title = "Xóa Bài Hát Yêu Thích";
+   
+}
+
+<div class="container">
+    <h3>Xóa Bài Hát Yêu Thích</h3>
+    <p>Bạn có chắc chắn muốn xóa bài hát yêu thích này không?</p>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Tên Bài Hát: @Model.tblMusic.DisplayName</h5>
+            <p class="card-text">Ca Sĩ: @Model.tblMusic.casi</p>
+            <p class="card-text">Lời Bài Hát: @Model.tblMusic.Cotenttype</p>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("RemoveFromFavoriteConfirmed", "Song", new { id = Model.IDFavorite }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">Xóa</button>
+        @Html.ActionLink("Hủy", "ManageFavoriteAlbums", "Song", null, new { @class = "btn btn-secondary" })
+    }
+</div>
