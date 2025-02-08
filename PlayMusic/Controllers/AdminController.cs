@@ -30,7 +30,7 @@ namespace PlayMusic.Controllers
             var music = db.tblMusics.Find(id); // Tìm bài hát bằng ID
             if (music == null)
             {
-                return HttpNotFound(); // Nếu không tìm thấy, trả về lỗi 404
+                return HttpNotFound(); // Nếu không tìm thấy, trả về lỗi 
             }
             return View(music); // Trả dữ liệu bài hát cho View
         }

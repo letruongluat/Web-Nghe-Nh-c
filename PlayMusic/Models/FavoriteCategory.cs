@@ -12,14 +12,10 @@ namespace PlayMusic.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class FavoriteAlbum
+    public partial class FavoriteCategory
     {
-        public int IDFavorite { get; set; }
+        public int IDCategory { get; set; }
+        public string CategoryName { get; set; }
         public string IDacount { get; set; }
-        public Nullable<int> iDMusic { get; set; }
-        public Nullable<int> IDCategory { get; set; }
-    
-        public virtual tblAccount tblAccount { get; set; }
-        public virtual tblMusic tblMusic { get; set; }
     }
 }

@@ -1,6 +1,89 @@
 ﻿@{
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
+    
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Chào Mừng Admin</h2>
+<!-- Kết nối với CSS tự tạo -->
+<style>
+    /* Thiết lập toàn bộ trang */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        height: 100vh;
+    }
 
+
+
+
+    /* Thiết lập cho khối chào mừng */
+    .welcome-box {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        text-align: center;
+        margin-top: 50px;
+    }
+
+        .welcome-box h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .welcome-box p {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .welcome-box hr {
+            border: 0;
+            border-top: 2px solid #007bff;
+            width: 60px;
+            margin: 10px auto;
+        }
+
+        .welcome-box a {
+            text-decoration: none;
+            color: white;
+            background-color: #28a745;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+            .welcome-box a:hover {
+                background-color: #218838;
+            }
+
+    /* Thêm phần chân trang */
+    footer {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+    }
+</style>
+
+
+
+<!-- Container -->
+
+    <!-- Chào mừng người dùng -->
+    <div class="welcome-box">
+        <h2>Chào mừng đến với hệ thống quản lý!</h2>
+        <p>Xin chào, @User.Identity.Name! Bạn có thể quản lý người dùng, thống kê và các tính năng khác ngay từ đây.</p>
+        <hr>
+        <p>Chọn một chức năng từ menu để bắt đầu.</p>
+        <a href="/Home/Features">Bắt đầu ngay</a>
+    </div>
+
+
+<!-- Footer -->

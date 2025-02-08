@@ -1,85 +1,165 @@
 ﻿@model PlayMusic.Models.tblMusic
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Bài hát - " + Model.DisplayName;
 }
 
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
-    .bang {
-        width: 100%;
+    .favorite-btn {
+        background: none;
         border: none;
-    }
-
-    .audion {
-        display: flex;
-        align-items: center;
-    }
-
-    .imgg {
-        max-width: 200px;
-        border-radius: 10px;
-    }
-
-    .klga {
-        margin-left: 20px;
-    }
-
-    .per-r {
-        font-weight: bold;
         font-size: 1.5em;
+        color: red;
+        cursor: pointer;
     }
 
-    .nhac {
-        width: 200%;
+    .lyric-content {
+        white-space: pre-line;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .audio-player {
+        width: 100%;
         margin-top: 10px;
     }
 
-    .lyric {
-        margin-top: 20px;
-    }
-
-    .lyric-tt {
-        font-weight: bold;
+    .navigation-btn {
+        text-decoration: none;
         font-size: 1.2em;
+        padding: 10px 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
     }
 
-    .lyric-tt2 {
-        white-space: pre-line; /* Đảm bảo giữ nguyên các dấu xuống dòng */
-    }
+        .navigation-btn:hover {
+            background-color: #f5f5f5;
+            color: #007bff;
+        }
 </style>
 
-<div class="container">
-    <h3 style="margin-left: 10px">
-        <a href='@Url.Action("Index", "Home")' style="color: black">Trang chủ</a> - Bài hát - @Model.DisplayName
-    </h3>
-    <hr style="width: 85%" />
-   
+<div class="container mt-4">
+    <!-- Điều hướng -->
+    <h5>
+        <a href='@Url.Action("Index", "Home")' class="text-decoration-none text-dark fw-bold">
+            Trang chủ
+        </a> - Bài hát - @Model.DisplayName
+    </h5>
+    <hr class="w-75 mb-4" />
 
-    <div class="audion">
-        <div>
-            <img class="imgg" src="@Model.Image" alt="@Model.DisplayName" style="width:400px"/>
+    <!-- Thông tin bài hát -->
+    <div class="row align-items-center mb-4">
+        <div class="col-md-4 text-center">
+            <img src="@Model.Image" alt="@Model.DisplayName" class="img-fluid rounded shadow-lg" style="max-width: 300px;" />
         </div>
-        <div class="klga">
-            <p class="per-r">@Model.DisplayName</p>
-            <p>Ca sĩ: @Model.casi</p>
-            <form action="@Url.Action("AddToFavorite", "Song")" method="post" style="display:inline;">
+        <div class="col-md-8">
+            <h3 class="fw-bold">@Model.DisplayName</h3>
+            <p class="text-muted fs-5">Ca sĩ: <span class="text-dark">@Model.casi</span></p>
+
+            <!-- Form yêu thích -->
+            <form action="@Url.Action("AddToFavorite", "Song")" method="post" class="d-inline">
                 @Html.AntiForgeryToken()
-                <input type="hidden" name="id" value="@Model.iDmusic" /> <!-- Ensure this value is correct -->
-                <button type="submit" class="favorite-btn" title="Thêm vào yêu thích">
-                    ❤️
-                </button>
+                <input type="hidden" name="id" value="@Model.iDmusic" />
+                <button type="submit" class="favorite-btn" title="Thêm vào yêu thích">❤️</button>
             </form>
 
+            <!-- Audio Player -->
+            <audio autoplay src="@Url.Content("~/music/" + Model.Data)" controls class="audio-player" id="audioPlayer"></audio>
+        </div>
+        <!-- Điều hướng bài hát trước và tiếp theo -->
+        <div class="d-flex justify-content-between mt-5">
+            @if (ViewBag.PreviousSong != null)
+            {
+                <a href="@Url.Action("Details", "Song", new { id = ViewBag.PreviousSong.iDmusic })" class="navigation-btn">
+                    ⬅ @ViewBag.PreviousSong.DisplayName
+                </a>
+            }
+            else
+            {
+                <span></span>
+            }
 
-            <audio autoplay="autoplay" src="@Url.Content("~/music/" + Model.Data)" controls="controls" class="nhac"></audio>
-
-
-
+            @if (ViewBag.NextSong != null)
+            {
+                <a href="@Url.Action("Details", "Song", new { id = ViewBag.NextSong.iDmusic })" class="navigation-btn" id="nextSongLink">
+                    @ViewBag.NextSong.DisplayName ➡
+                </a>
+            }
         </div>
     </div>
 
-    <div class="lyric">
-        <p class="lyric-tt">Lời Bài Hát:</p>
-        <p class="lyric-tt2">@Html.Raw(Model.Cotenttype.Replace("\n", "<br />"))</p>
+    <!-- Lời bài hát -->
+    <div class="mt-4">
+        <h4 class="fw-bold mb-3">Lời Bài Hát</h4>
+        <div class="lyric-content bg-light p-3 rounded shadow-sm">
+            @Html.Raw(Model.Cotenttype)
+        </div>
     </div>
 </div>
+
+<!-- JavaScript -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const audioPlayer = document.getElementById("audioPlayer");
+        const nextSongLink = document.getElementById("nextSongLink");
+
+        // Lưu bài hát vào sessionStorage
+        sessionStorage.setItem("currentSong", "@Url.Content("~/music/" + Model.Data)");
+
+        // Tự động chuyển bài khi kết thúc
+        if (audioPlayer && nextSongLink) {
+            audioPlayer.addEventListener("ended", function () {
+                window.location.href = nextSongLink.href;
+            });
+        }
+    });
+</script>
+
+
+
+<script>
+    // Lấy các phần tử
+    const floatingPlayer = document.getElementById('floatingPlayer');
+    const floatingAudioPlayer = document.getElementById('floatingAudioPlayer');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const volumeControl = document.getElementById('volumeControl');
+    const exitBtn = document.getElementById('exitBtn');
+
+    // Lấy đường dẫn bài hát từ sessionStorage
+    const songPath = sessionStorage.getItem("currentSong");
+    if (songPath) {
+        document.getElementById('audioSource').src = songPath;
+        floatingPlayer.style.display = "block"; // Hiển thị player
+        floatingAudioPlayer.play();
+    }
+
+    // Play/Pause toggle
+    pauseBtn.addEventListener('click', function () {
+        if (floatingAudioPlayer.paused) {
+            floatingAudioPlayer.play();
+            pauseBtn.textContent = '⏸️';
+        } else {
+            floatingAudioPlayer.pause();
+            pauseBtn.textContent = '▶️';
+        }
+    });
+
+    // Điều chỉnh âm lượng
+    volumeControl.addEventListener('input', function () {
+        floatingAudioPlayer.volume = volumeControl.value;
+    });
+
+    // Tắt floating player
+    exitBtn.addEventListener('click', function () {
+        floatingAudioPlayer.pause();
+        floatingPlayer.style.display = "none";
+        sessionStorage.removeItem("currentSong");
+    });
+</script>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

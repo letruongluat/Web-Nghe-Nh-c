@@ -4,11 +4,13 @@
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Định dạng toàn trang */
         body {
             display: flex;
             justify-content: center;
@@ -17,98 +19,116 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background: linear-gradient(to right, #4e54c8, #8f94fb);
+            overflow: hidden;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             position: relative;
+            animation: slide-up 0.6s ease-out;
         }
 
         /* Tiêu đề */
         .header-title {
-            position: absolute;
-            top: 20px;
             text-align: center;
-            width: 100%;
-            color: #fff;
-            font-size: 24px;
+            margin-bottom: 30px;
+            color: #4e54c8;
+            animation: fade-in 1.5s ease-out;
         }
 
-        /* Container của form */
-        form {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+        /* Hiệu ứng fade-in cho tiêu đề */
+        @@keyframes fade-in {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
-        /* Định dạng cho các label */
-        label {
-            display: block;
+        /* Hiệu ứng slide-up cho container */
+        @@keyframes slide-up {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .form-label {
             font-size: 14px;
             color: #666;
-            margin-bottom: 5px;
         }
 
-        /* Định dạng cho các trường input */
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
+        .form-control {
             border-radius: 5px;
+            border: 1px solid #ddd;
+            padding: 10px;
             font-size: 14px;
             color: #333;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease-in-out;
         }
 
-            input[type="text"]:focus,
-            input[type="password"]:focus {
-                border-color: #4e54c8;
-                outline: none;
-            }
+        .form-control:focus {
+            border-color: #4e54c8;
+            box-shadow: 0 0 5px rgba(78, 84, 200, 0.5);
+        }
 
-        /* Định dạng cho nút đăng nhập */
-        button[type="submit"] {
-            width: 100%;
-            padding: 10px;
+        /* Hiệu ứng hover cho nút đăng nhập */
+        .btn-primary {
             background-color: #4e54c8;
             border: none;
             border-radius: 5px;
-            color: #fff;
+            color: white;
             font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            width: 100%;
+            padding: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-            button[type="submit"]:hover {
-                background-color: #3b43b5;
-            }
+        .btn-primary:hover {
+            background-color: #3b43b5;
+            transform: scale(1.05);
+        }
 
-        /* Thông báo lỗi */
-        p {
+        /* Hiệu ứng cho thông báo lỗi */
+        .error-message {
             color: red;
             font-size: 14px;
             text-align: center;
+            animation: fade-in-error 1s ease-out;
         }
+
+        @@keyframes fade-in-error {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
     </style>
 </head>
 <body>
-    <div class="header-title"><h2>Đăng Nhập Admin</h2></div>
 
-    <form method="post" action="@Url.Action("Index", "Admin")">
-        <div>
-            <label for="username">Tên đăng nhập:</label>
-            <input type="text" id="username" name="username" required />
+    <div class="login-container">
+        <div class="header-title">
+            <h2>Đăng Nhập Admin</h2>
         </div>
-        <div>
-            <label for="password">Mật khẩu:</label>
-            <input type="password" id="password" name="password" required />
-        </div>
-        <button type="submit">Đăng nhập</button>
-    </form>
 
-    @if (!string.IsNullOrEmpty(ViewBag.Error))
-    {
-        <p style="color:red;">@ViewBag.Error</p>
-    }
+        <form method="post" action="@Url.Action("Index", "Admin")">
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên đăng nhập:</label>
+                <input type="text" id="username" name="username" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu:</label>
+                <input type="password" id="password" name="password" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+        </form>
+
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <p class="error-message">@ViewBag.Error</p>
+        }
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

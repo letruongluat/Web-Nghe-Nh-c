@@ -34,5 +34,6 @@ namespace PlayMusic.Models
         public virtual DbSet<Theloai> Theloais { get; set; }
         public virtual DbSet<FavoriteAlbum> FavoriteAlbums { get; set; }
         public virtual DbSet<ViewLog> ViewLogs { get; set; }
+        public virtual DbSet<FavoriteCategory> FavoriteCategories { get; set; }
     }
 }

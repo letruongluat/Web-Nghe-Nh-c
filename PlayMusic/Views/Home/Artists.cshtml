@@ -1,51 +1,41 @@
-﻿    @model IEnumerable<string>
+﻿@model IEnumerable<string>
 
-    @{
-        ViewBag.Title = "Danh sách ca sĩ";
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
+@{
+    ViewBag.Title = "Danh sách ca sĩ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-    <div>
-        <h1 style="text-align:center;">Danh sách ca sĩ</h1>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        <div class="artist-list">
-            @foreach (var artist in Model)
-            {
-                <div class="artist-item">
-                    <a href="@Url.Action("ArtistSongs", "Home", new { artistName = artist })">
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Danh sách ca sĩ</h1>
+
+    <div class="row row-cols-2 row-cols-md-4 g-4 justify-content-center">
+        @foreach (var artist in Model)
+        {
+            <div class="col text-center">
+                <div class="artist-item bg-info text-white rounded-circle p-3 shadow">
+                    <a href="@Url.Action("ArtistSongs", "Home", new { artistName = artist })" class="text-decoration-none text-white">
                        
-                        <p>@artist</p>
+                        <p class="fw-bold mb-0">@artist</p>
                     </a>
                 </div>
-           
-            }
-        </div>
+            </div>
+        }
     </div>
-    <style>
-        .artist-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    .artist-item {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .artist-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
-
-        .artist-item {
-            text-align: center;
-            width: 150px;
-            background-color: aquamarine ;
-            border-radius: 100%;
-            
-        }
-
-            .artist-item img {
-                width: 100px;
-                height: 100px;
-                border-radius: 100%;
-            }
-
-            .artist-item p {
-                margin-top: 10px;
-                font-weight: bold;
-            }
-            
-    </style>
+</style>

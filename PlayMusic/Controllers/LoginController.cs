@@ -8,7 +8,7 @@ namespace PlayMusic.Controllers
 {
     public class LoginController : Controller
     {
-        private MusicWebEntities1 db = new MusicWebEntities1(); // Replace with your DbContext
+        private MusicWebEntities1 db = new MusicWebEntities1(); 
 
         // GET: Login
         [HttpGet]

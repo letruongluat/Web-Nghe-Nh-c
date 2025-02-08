@@ -30,6 +30,15 @@
           <Property Name="IDFavorite" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDacount" Type="nvarchar" MaxLength="50" />
           <Property Name="iDMusic" Type="int" />
+          <Property Name="IDCategory" Type="int" />
+        </EntityType>
+        <EntityType Name="FavoriteCategories">
+          <Key>
+            <PropertyRef Name="IDCategory" />
+          </Key>
+          <Property Name="IDCategory" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="IDacount" Type="nvarchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="nhactt">
           <Key>
@@ -74,6 +83,7 @@
           <Property Name="luotnghe" Type="int" />
           <Property Name="casi" Type="nvarchar" MaxLength="50" />
           <Property Name="idchude" Type="int" />
+          <Property Name="UrlDropbox" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Theloai">
           <Key>
@@ -154,6 +164,7 @@
           <EntitySet Name="bxh" EntityType="Self.bxh" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="chude" EntityType="Self.chude" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FavoriteAlbums" EntityType="Self.FavoriteAlbums" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FavoriteCategories" EntityType="Self.FavoriteCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="nhactt" EntityType="Self.nhactt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAccount" EntityType="Self.tblAccount" Schema="dbo" store:Type="Tables" />
@@ -254,6 +265,7 @@
           <NavigationProperty Name="nhactts" Relationship="Self.FK_nhactt_tblMusic" FromRole="tblMusic" ToRole="nhactt" />
           <NavigationProperty Name="tblAccount" Relationship="Self.FK_tblMusic_tblAccount" FromRole="tblMusic" ToRole="tblAccount" />
           <NavigationProperty Name="FavoriteAlbums" Relationship="MusicWebModel.FK_FavoriteAlbums_Music" FromRole="tblMusic" ToRole="FavoriteAlbum" />
+          <Property Name="UrlDropbox" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Theloai">
           <Key>
@@ -328,6 +340,7 @@
             <End Role="FavoriteAlbum" EntitySet="FavoriteAlbums" />
           </AssociationSet>
           <EntitySet Name="ViewLogs" EntityType="MusicWebModel.ViewLog" />
+          <EntitySet Name="FavoriteCategories" EntityType="MusicWebModel.FavoriteCategory" />
         </EntityContainer>
         <EntityType Name="FavoriteAlbum">
           <Key>
@@ -338,6 +351,7 @@
           <Property Name="iDMusic" Type="Int32" />
           <NavigationProperty Name="tblAccount" Relationship="MusicWebModel.FK_FavoriteAlbums_Account" FromRole="FavoriteAlbum" ToRole="tblAccount" />
           <NavigationProperty Name="tblMusic" Relationship="MusicWebModel.FK_FavoriteAlbums_Music" FromRole="FavoriteAlbum" ToRole="tblMusic" />
+          <Property Name="IDCategory" Type="Int32" />
         </EntityType>
         <Association Name="FK_FavoriteAlbums_Account">
           <End Type="MusicWebModel.tblAccount" Role="tblAccount" Multiplicity="0..1" />
@@ -370,6 +384,14 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ViewDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Count" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FavoriteCategory">
+          <Key>
+            <PropertyRef Name="IDCategory" />
+          </Key>
+          <Property Name="IDCategory" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IDacount" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -433,6 +455,7 @@
           <EntitySetMapping Name="tblMusics">
             <EntityTypeMapping TypeName="MusicWebModel.tblMusic">
               <MappingFragment StoreEntitySet="tblMusic">
+                <ScalarProperty Name="UrlDropbox" ColumnName="UrlDropbox" />
                 <ScalarProperty Name="iDmusic" ColumnName="iDmusic" />
                 <ScalarProperty Name="iDacc" ColumnName="iDacc" />
                 <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
@@ -456,6 +479,7 @@
           <EntitySetMapping Name="FavoriteAlbums">
             <EntityTypeMapping TypeName="MusicWebModel.FavoriteAlbum">
               <MappingFragment StoreEntitySet="FavoriteAlbums">
+                <ScalarProperty Name="IDCategory" ColumnName="IDCategory" />
                 <ScalarProperty Name="iDMusic" ColumnName="iDMusic" />
                 <ScalarProperty Name="IDacount" ColumnName="IDacount" />
                 <ScalarProperty Name="IDFavorite" ColumnName="IDFavorite" />
@@ -468,6 +492,15 @@
                 <ScalarProperty Name="Count" ColumnName="Count" />
                 <ScalarProperty Name="ViewDate" ColumnName="ViewDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FavoriteCategories">
+            <EntityTypeMapping TypeName="MusicWebModel.FavoriteCategory">
+              <MappingFragment StoreEntitySet="FavoriteCategories">
+                <ScalarProperty Name="IDacount" ColumnName="IDacount" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="IDCategory" ColumnName="IDCategory" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

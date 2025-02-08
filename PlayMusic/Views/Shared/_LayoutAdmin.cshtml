@@ -12,6 +12,12 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @@keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         .container {
@@ -27,43 +33,65 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-            .header .left, .header .center, .header .right {
-                display: flex;
-                align-items: center;
-            }
+        .header .left, .header .right {
+            display: flex;
+            align-items: center;
+        }
 
-                .header .left a, .header .right a {
-                    color: white;
-                    margin-right: 20px;
-                    text-decoration: none;
-                    padding: 10px 15px;
-                    background-color: #005bb5;
-                    border-radius: 5px;
-                }
+        .header .left a, .header .right a {
+            color: white;
+            margin-right: 20px;
+            text-decoration: none;
+            padding: 10px 15px;
+            background-color: #005bb5;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-                    .header .left a:hover, .header .right a:hover {
-                        background-color: #004999;
-                    }
+        .header .left a:hover, .header .right a:hover {
+            background-color: #004999;
+            transform: scale(1.05);
+        }
 
-            .header .center {
-                flex-grow: 1;
-                justify-content: center;
-            }
+        .header .center {
+            flex-grow: 1;
+            justify-content: center;
+            display: flex;
+            justify-content: center;
+        }
 
-                .header .center input[type="text"] {
-                    width: 200px;
-                    padding: 5px;
-                }
+        .header .center input[type="text"] {
+            width: 200px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            transition: border 0.3s ease;
+        }
 
-                .header .center button {
-                    padding: 5px 10px;
-                }
+        .header .center input[type="text"]:focus {
+            border-color: #005bb5;
+        }
+
+        .header .center button {
+            padding: 5px 10px;
+            background-color: #005bb5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .header .center button:hover {
+            background-color: #004999;
+        }
 
         .content {
             display: flex;
             flex: 1;
+            transition: all 0.3s ease;
         }
 
         .sidebar {
@@ -71,19 +99,7 @@
             width: 200px;
             padding: 20px;
             box-sizing: border-box;
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .menu-item {
-            margin-bottom: 10px;
+            transition: width 0.3s ease;
         }
 
         .sidebar a {
@@ -93,11 +109,33 @@
             padding: 10px;
             background-color: #0066cc;
             border-radius: 5px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-            .sidebar a:hover {
-                background-color: #005bb5;
-            }
+        .sidebar a:hover {
+            background-color: #005bb5;
+            transform: scale(1.05);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .menu-item {
+            margin-bottom: 10px;
+        }
+
+        /* Hiệu ứng khi sidebar được hover (mở rộng sidebar) */
+        .sidebar:hover {
+            width: 240px;
+        }
     </style>
 </head>
 <body>
@@ -107,27 +145,21 @@
                 <a href="@Url.Action("Index", "Admin")">Trang chủ</a>
                 <a href="@Url.Action("Contribute", "Admin")">Upload nhạc</a>
             </div>
-            
-
 
             <div class="right">
-               
-                    <a href="@Url.Action("Index", "LoginAdmin")">Đăng Xuất</a>
-               
-
+                <a href="@Url.Action("Index", "LoginAdmin")">Đăng Xuất</a>
             </div>
-
         </div>
 
         <div style="text-align: center; background-color: #0066cc;color:red;">
             <h2 class="center"></h2>
         </div>
+
         <div class="content">
             <div class="sidebar">
-
-                <a href="@Url.Action("ManageDisplayedSongs", "Admin")" class="menu-item">Quản Lý Album  Ca Sỹ</a>
-                <a class="nav-link" href="@Url.Action("Songs", "Admin")">Quản lý Bài Hát</a>
-                <a class="nav-link" href="@Url.Action("Users", "Admin")">Quản lý Người Dùng</a>
+                <a href="@Url.Action("ManageDisplayedSongs", "Admin")" class="menu-item">Quản Lý Album Ca Sỹ</a>
+                <a href="@Url.Action("Songs", "Admin")">Quản lý Bài Hát</a>
+                <a href="@Url.Action("Users", "Admin")">Quản lý Người Dùng</a>
                 <a href="@Url.Action("ManageGenre", "Admin")" class="menu-item">Quản Lý Thể Loại</a>
                 <a href="@Url.Action("ManageViews", "Admin")" class="menu-item">Thống kê Số Lượng Truy Cập</a>
                 <a href="@Url.Action("ContributeList", "Admin")" class="menu-item">Những Bài Hát Đã Đóng Góp</a>
@@ -137,6 +169,7 @@
                 @RenderBody()
             </div>
         </div>
+
         @RenderSection("Scripts", required: false)
     </div>
 </body>

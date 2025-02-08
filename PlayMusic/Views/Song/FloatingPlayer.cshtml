@@ -1,0 +1,75 @@
+﻿@{
+    Layout = null;
+}
+
+<!-- Floating Player -->
+<div id="floatingPlayer" style="display:none; position: fixed; bottom: 20px; right: 20px; background-color: #fff; padding: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); z-index: 9999;">
+  
+        <audio id="floatingAudioPlayer" controls style="width: 20vw;">
+            <source src="" id="audioSource" />
+        </audio>
+        <button id="pauseBtn">⏸️</button>
+
+        @if (ViewBag.PreviousSong != null)
+        {
+            <a href="@Url.Action("Details", "Song", new { id = ViewBag.PreviousSong.iDmusic })" class="navigation-btn">
+                ⬅
+            </a>
+        }
+        else
+        {
+            <span></span>
+        }
+
+        @if (ViewBag.NextSong != null)
+        {
+            <a href="@Url.Action("Details", "Song", new { id = ViewBag.NextSong.iDmusic })" class="navigation-btn" id="nextSongLink">
+                ➡
+            </a>
+        }
+
+        <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1" style="width:3vw" />
+
+        <button id="exitBtn">❌</button>
+    </div>
+<script>
+    // Get elements
+    const floatingPlayer = document.getElementById('floatingPlayer');
+    const floatingAudioPlayer = document.getElementById('floatingAudioPlayer');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const volumeControl = document.getElementById('volumeControl');
+    const exitBtn = document.getElementById('exitBtn');
+
+    // Set the audio source from sessionStorage
+    const songPath = sessionStorage.getItem("currentSong");
+    if (songPath) {
+        document.getElementById('audioSource').src = songPath;
+        floatingPlayer.style.display = "flex"; // Show the player
+        floatingAudioPlayer.play();
+    }
+
+    // Play/Pause toggle
+    pauseBtn.addEventListener('click', function () {
+        if (floatingAudioPlayer.paused) {
+            floatingAudioPlayer.play();
+            pauseBtn.textContent = '⏸️';
+        } else {
+            floatingAudioPlayer.pause();
+            pauseBtn.textContent = '▶️';
+        }
+    });
+
+    // Volume control
+    volumeControl.addEventListener('input', function () {
+        floatingAudioPlayer.volume = volumeControl.value;
+    });
+
+    // Exit button to hide floating player
+    exitBtn.addEventListener('click', function () {
+        floatingAudioPlayer.pause();
+        floatingPlayer.style.display = "none";
+        sessionStorage.removeItem("currentSong"); // Remove current song from sessionStorage
+    });
+</script>
